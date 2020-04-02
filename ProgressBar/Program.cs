@@ -8,7 +8,7 @@ namespace ProgressBar
     {
         static void Main(string[] args)
         {
-            FollowerProgressBarExample();
+            //FollowerProgressBarExample();
             NormProgressBarExample();
         }
 
@@ -17,7 +17,7 @@ namespace ProgressBar
             // Please use the following styles of the progress bar:
             // 1. Head
             // 2. Rear
-            var pb = new FollowerProgressBar(FollowerProgressBarStyle.Head);
+            var pb = new FollowerProgressBar(FollowerProgressBarStyle.Rear);
             pb.SetInfo("Reading...", ConsoleColor.Cyan);
             pb.Start();
             Thread.Sleep(5000); // do something here.
@@ -37,8 +37,12 @@ namespace ProgressBar
             // 1. CharacterFill
             // 2. CharacterReplace
             // 3. ColorBlock
-            var pb = new NormProgressBar(NormProgressBarStyle.ColorBlock); 
-            //pb.FilledProgressBodyChar = pb.FilledProgressHeaderChar = '*'; // Change the progress bar's characters.
+            var pb = new NormProgressBar(NormProgressBarStyle.ColorBlock);
+            pb.Background = ConsoleColor.DarkYellow;
+            pb.BlockColor = ConsoleColor.Magenta; 
+            //pb.ReplacedProgressBackgroundChar = '=';
+            //pb.FilledProgressBodyChar = 'O';
+            //pb.FilledProgressHeaderChar = 'O'; // Change the progress bar's characters.
             pb.Initialize();
 
             // Message list
