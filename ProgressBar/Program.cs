@@ -37,12 +37,19 @@ namespace ProgressBar
             // 1. CharacterFill
             // 2. CharacterReplace
             // 3. ColorBlock
-            var pb = new NormProgressBar(NormProgressBarStyle.ColorBlock);
-            pb.Background = ConsoleColor.DarkYellow;
-            pb.BlockColor = ConsoleColor.Magenta; 
+            var pb = new NormProgressBar(NormProgressBarStyle.CharacterReplace);
+            /* Only config for ColorBlock sub-style */
+            //pb.Background = ConsoleColor.DarkYellow;
+            //pb.BlockColor = ConsoleColor.Magenta; 
+
+            /* Config for CharacterFill and CharacterReplace sub-styles */
+            //pb.Foreground = ConsoleColor.Green;
+            //pb.ProgressBarStartChar = '[';
             //pb.ReplacedProgressBackgroundChar = '=';
             //pb.FilledProgressBodyChar = 'O';
-            //pb.FilledProgressHeaderChar = 'O'; // Change the progress bar's characters.
+            //pb.FilledProgressHeaderChar = 'O';
+            //pb.ProgressBarEndChar = ']';
+
             pb.Initialize();
 
             // Message list
@@ -76,7 +83,7 @@ namespace ProgressBar
                     msg = msgs[index++];
                 }
 
-                pb.SetInfo(value++, msg + "\t" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+                pb.SetInfo(value++, msg + "\t" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"), ConsoleColor.White, ConsoleColor.Green);
 
                 // do something in while loop
                 // maybe there is a job list

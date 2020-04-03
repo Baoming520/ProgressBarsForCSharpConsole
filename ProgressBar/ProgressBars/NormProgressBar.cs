@@ -13,16 +13,18 @@
             this.Left = 0;
             this.Top = Console.CursorTop + 1;
             this.Width = 50;
-            this.Foreground = ConsoleColor.White;
-            this.Background = ConsoleColor.DarkCyan;
 
             // For color block style
+            this.Background = ConsoleColor.DarkCyan;
             this.BlockColor = ConsoleColor.Green;
 
             // For char style
+            this.Foreground = ConsoleColor.White;
+            this.ProgressBarStartChar = '|';
             this.FilledProgressBodyChar = '=';
             this.FilledProgressHeaderChar = '>';
             this.ReplacedProgressBackgroundChar = '-';
+            this.ProgressBarEndChar = '|';
 
             this.Done = false;
 
@@ -44,20 +46,28 @@
         /// </summary>
         public int Width { get; set; }
 
+        #region Only for ColorBlock sub-style.
         /// <summary>
         /// The background of the progress bar.
         /// </summary>
         public ConsoleColor Background { get; set; }
 
         /// <summary>
+        /// The color of filled blocks in the progress bar.  
+        /// </summary>
+        public ConsoleColor BlockColor { get; set; }
+        #endregion
+
+        #region For CharacterFill and CharacterReplace sub-styles.
+        /// <summary>
         /// The foreground of the progress bar.
         /// </summary>
         public ConsoleColor Foreground { get; set; }
 
         /// <summary>
-        /// The color of filled blocks in the progress bar.  
+        /// The start character to shape the progress bar.
         /// </summary>
-        public ConsoleColor BlockColor { get; set; }
+        public char ProgressBarStartChar { get; set; }
 
         /// <summary>
         /// Filled body-character in the progress bar.
@@ -73,6 +83,12 @@
         /// Replaced background-char in the progress bar.
         /// </summary>
         public char ReplacedProgressBackgroundChar { get; set; }
+
+        /// <summary>
+        /// The end character to shape the progress bar.
+        /// </summary>
+        public char ProgressBarEndChar { get; set; }
+        #endregion
 
         /// <summary>
         /// The lengths of the previous messages.
@@ -97,14 +113,14 @@
             {
                 Console.SetCursorPosition(this.Left, this.Top);
                 Console.ForegroundColor = this.Foreground;
-                Console.Write('|' + new string(' ', this.Width - 2) + '|');
+                Console.Write(this.ProgressBarStartChar + new string(' ', this.Width - 2) + this.ProgressBarEndChar);
                 Console.ResetColor();
             }
             else // NormProgressBarStyle.CharacterReplace
             {
                 Console.SetCursorPosition(this.Left, this.Top);
                 Console.ForegroundColor = this.Foreground;
-                Console.Write('|' + new string(this.ReplacedProgressBackgroundChar, this.Width - 2) + '|');
+                Console.Write(this.ProgressBarStartChar + new string(this.ReplacedProgressBackgroundChar, this.Width - 2) + this.ProgressBarEndChar);
                 Console.ResetColor();
             }
         }
@@ -122,7 +138,7 @@
             }
         }
 
-        public void SetInfo(double value, string message, ConsoleColor fontColor = ConsoleColor.White)
+        public void SetInfo(double value, string message, ConsoleColor fontColor = ConsoleColor.White, ConsoleColor scaleColor = ConsoleColor.White)
         {
             if (this.MessageLengths != null && this.MessageLengths.Length > 0)
             {
@@ -166,7 +182,7 @@
                 Console.Write(blocks);
                 Console.ResetColor();
 
-                Console.ForegroundColor = fontColor;
+                Console.ForegroundColor = scaleColor;
                 Console.SetCursorPosition(this.Width + SCALE_PADDING, this.Top);
                 var scale = string.Format("{0}%", (int)((double)blocks.Length / (double)this.Width * 100));
                 scale = new string(' ', SCALE_MAXLEN - scale.Length) + scale;
@@ -191,7 +207,7 @@
                 Console.Write(chars);
                 Console.ResetColor();
 
-                Console.ForegroundColor = fontColor;
+                Console.ForegroundColor = scaleColor;
                 Console.SetCursorPosition(this.Width + SCALE_PADDING, this.Top);
                 var scale = string.Format("{0}%", (int)((double)(chars.Length + 2) / (double)this.Width * 100));
                 scale = new string(' ', SCALE_MAXLEN - scale.Length) + scale;
